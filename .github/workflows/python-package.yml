@@ -26,7 +26,8 @@ jobs:
 
       - name: Build executable with PyInstaller
         run: |
-          pyinstaller --onefile main.py
+          pyinstaller --onefile --noconsole --hidden-import PyQt5 --hidden-import numpy --add-data "methods;methods" main.py
+
           
       - name: Upload executable
         uses: actions/upload-artifact@v3
