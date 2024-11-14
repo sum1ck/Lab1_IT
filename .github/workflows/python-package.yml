@@ -47,4 +47,4 @@ jobs:
         with:
           files: dist/main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: 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
