@@ -27,8 +27,7 @@ jobs:
       - name: Build executable with PyInstaller
         run: |
           pyinstaller --onefile --noconsole --hidden-import PyQt5 --hidden-import numpy --add-data "methods;methods" main.py
-          # Переіменовуємо файл на main.exe, якщо це необхідно
-          rename dist\main.exe dist\solver.exe
+
 
       - name: Create release tag
         id: tag
