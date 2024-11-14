@@ -24,6 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Додати виконання тестів
+      - name: Run Unit Tests
+        run: |
+          python -m unittest discover -s tests  # Запускаємо тести з директорії "tests"
+
       - name: Build executable with PyInstaller
         run: |
           pyinstaller --onefile --noconsole --hidden-import PyQt5 --hidden-import numpy --add-data "methods;methods" main.py
@@ -34,7 +39,7 @@ jobs:
           name: solver-executable
           path: dist/main.exe
 
-      # Генерація тега за допомогою PowerShell
+      # Генерація тега
       - name: Generate release tag
         id: tag
         run: |
