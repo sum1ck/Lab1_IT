@@ -34,20 +34,19 @@ jobs:
           name: solver-executable
           path: dist/main
 
-      - name: Create a new tag
-        id: create_tag
+      # Генерація тега
+      - name: Generate release tag
+        id: tag
         run: |
-            TAG_NAME="v$(date +'%Y%m%d%H%M%S')" # create a tag with timestamp
-            git config --global user.name "GitHub Actions"
-            git config --global user.email "actions@github.com"
-            git tag $TAG_NAME
-            git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-            git push origin $TAG_NAME # Push the tag to the GitHub repository
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')" # Створення тега на основі дати
+          echo "Generated release tag: $TAG_NAME"
+          echo "::set-output name=release_tag::$TAG_NAME"
 
+      # Створення релізу за допомогою створеного тега
       - name: Create GitHub Release
-        id: create_release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.tag.outputs.release_tag }} # Використовуємо тег, згенерований в попередньому кроці
           files: dist/main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
