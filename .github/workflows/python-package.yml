@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Використовуємо Windows
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -28,18 +28,25 @@ jobs:
         run: |
           pyinstaller --onefile --noconsole --hidden-import PyQt5 --hidden-import numpy --add-data "methods;methods" main.py
 
-      - name: Create release tag
-        run: |
-          set TAG_NAME=v%DATE:~10,4%%DATE:~4,2%%DATE:~7,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%  # Створюємо тег з поточною датою
-          git tag %TAG_NAME%
-          git push origin %TAG_NAME%
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload executable as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: solver-executable
+          path: dist/main
 
-      - name: Release user files
+      # Генерація тега
+      - name: Generate release tag
+        id: tag
+        run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')" # Створення тега на основі дати
+          echo "Generated release tag: $TAG_NAME"
+          echo "::set-output name=release_tag::$TAG_NAME"
+
+      # Створення релізу за допомогою створеного тега
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          files: dist/main.exe  # Змінюємо на main.exe, оскільки це Windows
+          tag_name: ${{ steps.tag.outputs.release_tag }} # Використовуємо тег, згенерований в попередньому кроці
+          files: dist/main.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
