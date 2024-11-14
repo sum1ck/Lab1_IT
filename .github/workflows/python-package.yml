@@ -47,4 +47,4 @@ jobs:
         with:
           files: dist/main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: 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
