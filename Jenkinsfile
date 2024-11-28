@@ -1,8 +1,10 @@
 pipeline {
-    agent any  // Этот параметр указывает, что пайплайн может быть выполнен на любом доступном агенте
+    agent any
 
-    tools {
-        python 'Python 3.13'  // Устанавливаем нужную версию Python, которая настроена в Jenkins
+    environment {
+        // Указываем путь к установленной версии Python
+        PYTHON_HOME = 'C:\Users\\sumick\\AppData\\Local\\Programs\\Python\\Python313'  // Замените на правильный путь к Python 3.13 в Jenkins
+        PATH = "${PYTHON_HOME}\\Scripts;${PYTHON_HOME};${env.PATH}"
     }
 
     stages {
