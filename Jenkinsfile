@@ -25,6 +25,15 @@ pipeline {
             }
         }
 
+        stage('Run Tests') {
+            steps {
+                script {
+                    // Запуск юніт-тестів
+                    bat 'python -m unittest discover -s tests'  // Запускаем тесты из папки "tests"
+                }
+            }
+        }
+
         stage('Build Executable') {
             steps {
                 script {
