@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButto
 import os
 import importlib
 
+
 class SolverApp(QWidget):
     def __init__(self):
         super().__init__()
